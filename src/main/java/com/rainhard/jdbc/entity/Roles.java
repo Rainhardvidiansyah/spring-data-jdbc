@@ -16,6 +16,7 @@ public class Roles {
     private Long id;
 
     @Column("role_name")
+
     private String roleName;
 
     @CreatedDate
