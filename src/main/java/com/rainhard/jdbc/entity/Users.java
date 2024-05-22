@@ -1,19 +1,34 @@
 package com.rainhard.jdbc.entity;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
+
+import java.time.LocalDateTime;
 
 @Table("users")
 public class Users {
 
     @Id
     private Long id;
-
+    @Column("username")
     private String username;
 
+    @Column("email")
     private String email;
 
+    @Column("password")
     private String password;
+
+    @CreatedDate
+    @Column("createdAt")
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column("updatedAt")
+    private LocalDateTime updatedAt;
 
     public Long getId() {
         return id;
