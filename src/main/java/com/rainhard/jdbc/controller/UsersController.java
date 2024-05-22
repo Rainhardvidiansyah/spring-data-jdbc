@@ -1,7 +1,9 @@
 package com.rainhard.jdbc.controller;
 
 import com.rainhard.jdbc.dto.UsersDto;
+import com.rainhard.jdbc.entity.Roles;
 import com.rainhard.jdbc.entity.Users;
+import com.rainhard.jdbc.service.RolesService;
 import com.rainhard.jdbc.service.UsersService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping("/api/v1/users")
@@ -25,6 +28,10 @@ public class UsersController {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    //Branch Check-find-all-functionality
+    @Autowired
+    private RolesService rolesService;
 
     public String getUsersData(){
         return "Users Data";
@@ -63,6 +70,16 @@ public class UsersController {
     //TODO: will use this generic method later
     private <T> T err(T t){
         return t;
+    }
+
+    @GetMapping("/role")
+    public ResponseEntity<?> findUserRole(){
+        var roles = this.rolesService.getRolesById(1L);
+        if(roles.equals("ROLE_USER")){
+            return ResponseEntity.ok(roles.toString());
+        }else{
+            return ResponseEntity.badRequest().body(roles.toString());
+        }
     }
 
 
