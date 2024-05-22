@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController()
@@ -74,12 +75,15 @@ public class UsersController {
 
     @GetMapping("/role")
     public ResponseEntity<?> findUserRole(){
-        var roles = this.rolesService.getRolesById(1L);
-        if(roles.equals("ROLE_USER")){
-            return ResponseEntity.ok(roles.toString());
-        }else{
-            return ResponseEntity.badRequest().body(roles.toString());
+        var roles = this.rolesService.findAllRoles();
+        String user = null;
+        for (Roles role : roles) {
+            if("ROLE_USER".equals(role.getRoleName())){
+                user = role.getRoleName();
+                break;
+            }
         }
+        return ResponseEntity.ok(user);
     }
 
 
