@@ -43,6 +43,10 @@ public class Roles {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
+
+    public Long getRoleId() {
+        return  this.id;
+    }
 }
 
 
