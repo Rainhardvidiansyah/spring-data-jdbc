@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class Users {
 
     @Id
+    @Column("id")
     private Long id;
     @Column("username")
     private String username;
@@ -60,5 +61,21 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
