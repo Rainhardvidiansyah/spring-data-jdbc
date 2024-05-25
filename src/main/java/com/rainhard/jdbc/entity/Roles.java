@@ -19,6 +19,15 @@ public class Roles {
 
     private String roleName;
 
+    public Roles(){}
+
+    public Roles(Long id, String roleName, LocalDate createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.roleName = roleName;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     @CreatedDate
     @Column("createdAt")
     private LocalDate createdAt;
