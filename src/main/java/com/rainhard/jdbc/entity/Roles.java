@@ -16,17 +16,7 @@ public class Roles {
     private Long id;
 
     @Column("role_name")
-
     private String roleName;
-
-    public Roles(){}
-
-    public Roles(Long id, String roleName, LocalDate createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.roleName = roleName;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
     @CreatedDate
     @Column("createdAt")
@@ -35,6 +25,9 @@ public class Roles {
     @LastModifiedDate
     @Column("updatedAt")
     private LocalDateTime updatedAt;
+
+
+    public Roles(){}
 
 
     public Long getId() {
@@ -56,6 +49,7 @@ public class Roles {
     public Long getRoleId() {
         return  this.id;
     }
+
 }
 
 
