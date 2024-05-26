@@ -1,7 +1,7 @@
 package com.rainhard.jdbc.controller;
 
 import com.rainhard.jdbc.dto.UsersDto;
-import com.rainhard.jdbc.entity.Roles;
+import com.rainhard.jdbc.dto.users.UpdateUserNameDto;
 import com.rainhard.jdbc.entity.Users;
 import com.rainhard.jdbc.service.RolesService;
 import com.rainhard.jdbc.service.UsersService;
@@ -33,17 +33,33 @@ public class UsersController {
     @Autowired
     private RolesService rolesService;
 
-    public String getUsersData(){
-        return "Users Data";
-    }
 
     @PostMapping("/")
     public ResponseEntity<?> registration(@RequestBody UsersDto usersDto){
+        var isEmailFound = this.usersService.checkUserEmail(usersDto.getEmail());
+        log.info("isEmailFound:" + isEmailFound);
+
+        if(isEmailFound){
+            return ResponseEntity.badRequest().body("Email telah terdaftar");
+        }
         log.info("User Email Dto in Users Controller: " + usersDto.getEmail());
+
         if(usersDto.getPassword().isEmpty()){
             return new ResponseEntity<>(errorResponse("Kata sandi harus diisi!!!"), HttpStatus.BAD_REQUEST);
         }
-        var users = this.usersService.registration(usersDto);
+
+        var users = modelMapper.map(usersDto, Users.class);
+
+
+        var savedUsers = usersService.registration(users);
+
+        if(users.getId() != null) {
+            usersService.setRoles(savedUsers.getId());
+        }else{
+            return new ResponseEntity<>(errorResponse("Gagal menetapkan role!"), HttpStatus.BAD_REQUEST);
+        }
+
+        log.info("User id from registration method in controller:{}", users.getId());
         return new ResponseEntity<>(successResponse(users), HttpStatus.CREATED);
     }
 
@@ -59,31 +75,23 @@ public class UsersController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    private String successResponse(Users users){
-        return users.getEmail() + " berhasil terdaftar";
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUserName(@PathVariable Long id, @RequestBody UpdateUserNameDto nameDto){
+        var userId = this.usersService.checkUserId(id);
+        if(!userId){
+            return new ResponseEntity<>(errorResponse("User id tidak ditemukan"), HttpStatus.BAD_REQUEST);
+        }
+        this.usersService.updateUser(id, nameDto.getUserName());
+
+        return new ResponseEntity<>(successResponse("Nama pengguna telah diperbarui!"), HttpStatus.OK);
+    }
+
+    private <T> T successResponse(T t){
+        return t;
     }
 
     private String errorResponse(String response){
         return response;
     }
-
-    //TODO: will use this generic method later
-    private <T> T err(T t){
-        return t;
-    }
-
-    @GetMapping("/role")
-    public ResponseEntity<?> findUserRole(){
-        var roles = this.rolesService.findAllRoles();
-        String user = null;
-        for (Roles role : roles) {
-            if("ROLE_USER".equals(role.getRoleName())){
-                user = role.getRoleName();
-                break;
-            }
-        }
-        return ResponseEntity.ok(user);
-    }
-
 
 }
