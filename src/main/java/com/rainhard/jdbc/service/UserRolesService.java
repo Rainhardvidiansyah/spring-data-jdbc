@@ -1,7 +1,10 @@
 package com.rainhard.jdbc.service;
 
+import com.rainhard.jdbc.dto.response.UserRolesResponse;
 import com.rainhard.jdbc.entity.Roles;
+import com.rainhard.jdbc.entity.UserRoles;
 import com.rainhard.jdbc.repository.RolesRepository;
+import com.rainhard.jdbc.repository.UserRolesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,8 @@ public class UserRolesService {
 
     private static final Logger log = LoggerFactory.getLogger(UserRolesService.class);
 
+    @Autowired
+    private UserRolesRepository userRolesRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -39,6 +44,14 @@ public class UserRolesService {
             String sql = "INSERT INTO user_roles (user_id, role_id) VALUES (?,?)";
             jdbcTemplate.update(sql, user_id, roleId);
         }
+    }
+
+    public List<UserRoles> getAllUserRoles(){
+        return this.userRolesRepository.findAllUsersRole();
+    }
+
+    public List<UserRolesResponse> getRoles(){
+        return this.userRolesRepository.getUsersAndEmail();
     }
 
 }
