@@ -69,5 +69,21 @@ class UsersServiceTest {
         final AtomicLong atomicLong = new AtomicLong();
         System.out.println(atomicLong.incrementAndGet());
         System.out.println(atomicLong.incrementAndGet());
+        assertEquals(3L, atomicLong.incrementAndGet());
+    }
+
+    @Test
+    void updateUser() {
+        var users = new Users();
+        users.setId(1L);
+        users.setEmail("email");
+        users.setUsername("username");
+
+        when(usersRepository.updateUser(1L, "Rainhard")).thenReturn(1); //Row affected is 1 with specific ID
+
+        int updatedUser = usersService.updateUser(1L, "Rainhard");
+
+        assertNotEquals(10, updatedUser); // it is true because affected row is 1 with specific ID, not 10
+        assertEquals(1, updatedUser);
     }
 }
