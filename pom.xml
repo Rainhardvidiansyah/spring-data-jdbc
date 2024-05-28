@@ -9,10 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.jdbc</groupId>
-	<artifactId>jdbc-rainhard</artifactId>
+	<artifactId>users-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jdbc-rainhard</name>
-	<description>Demo project for JDBC Project</description>
+<!--	<description>Demo project for JDBC Project</description>-->
+	<description>users service</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
